@@ -1,7 +1,7 @@
 
 # Dantillion
 
-![alt text] (Dantalion.png)
+![alt mainimage](Dantalion.png)
 
 ## GUI Use
 I've not packed it as a release as I want to reduce the amount of files required, for now just clone and run LocalGPTGUI.exe from the "Main" folder
