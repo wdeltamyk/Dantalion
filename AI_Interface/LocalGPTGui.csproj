@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <Configurations>Debug</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <UseWindowsForms>False</UseWindowsForms>
+    <ApplicationIcon>main.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CSharp Modules\**" />
+    <Compile Remove="font\**" />
+    <Compile Remove="Main\**" />
+    <EmbeddedResource Remove="CSharp Modules\**" />
+    <EmbeddedResource Remove="font\**" />
+    <EmbeddedResource Remove="Main\**" />
+    <None Remove="CSharp Modules\**" />
+    <None Remove="font\**" />
+    <None Remove="Main\**" />
+    <Page Remove="CSharp Modules\**" />
+    <Page Remove="font\**" />
+    <Page Remove="Main\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="image-1.png" />
+    <None Remove="image-2.png" />
+    <None Remove="image-3.png" />
+    <None Remove="image-4.png" />
+    <None Remove="image.png" />
+    <None Remove="LICENSE" />
+    <None Remove="LocalGPT.deps.json" />
+    <None Remove="LocalGPT.dll" />
+    <None Remove="LocalGPT.pdb" />
+    <None Remove="README.md" />
+    <None Remove="requirements.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="main.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MdXaml" Version="1.27.0" />
+    <PackageReference Include="WPFMediaKit" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="attachmentpaperclipsymbolinblackcircularbutton_104786.ico" />
+    <Resource Include="send_circle_icon_136236.ico" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,5 @@
+anthropic==0.31.0
+bs4==0.0.2
+pythonnet==3.0.3
+selenium==4.22.0
+webdriver-manager==4.0.1

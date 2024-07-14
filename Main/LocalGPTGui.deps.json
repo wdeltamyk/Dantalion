@@ -1,0 +1,84 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "LocalGPTGui/1.0.0": {
+        "dependencies": {
+          "MdXaml": "1.27.0",
+          "WPFMediaKit": "2.3.0"
+        },
+        "runtime": {
+          "LocalGPTGui.dll": {}
+        }
+      },
+      "AvalonEdit/6.3.0.90": {
+        "runtime": {
+          "lib/net7.0-windows7.0/ICSharpCode.AvalonEdit.dll": {
+            "assemblyVersion": "6.3.0.90",
+            "fileVersion": "6.3.0.90"
+          }
+        }
+      },
+      "MdXaml/1.27.0": {
+        "dependencies": {
+          "AvalonEdit": "6.3.0.90",
+          "MdXaml.Plugins": "1.27.0"
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/MdXaml.dll": {
+            "assemblyVersion": "1.27.0.0",
+            "fileVersion": "1.27.0.0"
+          }
+        }
+      },
+      "MdXaml.Plugins/1.27.0": {
+        "runtime": {
+          "lib/net6.0-windows7.0/MdXaml.Plugins.dll": {
+            "assemblyVersion": "1.27.0.0",
+            "fileVersion": "1.27.0.0"
+          }
+        }
+      },
+      "WPFMediaKit/2.3.0": {}
+    }
+  },
+  "libraries": {
+    "LocalGPTGui/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AvalonEdit/6.3.0.90": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WVTb5MxwGqKdeasd3nG5udlV4t6OpvkFanziwI133K0/QJ5FvZmfzRQgpAjGTJhQfIA8GP7AzKQ3sTY9JOFk8Q==",
+      "path": "avalonedit/6.3.0.90",
+      "hashPath": "avalonedit.6.3.0.90.nupkg.sha512"
+    },
+    "MdXaml/1.27.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VWhqhCeKVkJe8vkPmXuGZlRX01WDrTugOLeUvJn18jH/8DrGGVBvtgIlJoELHD2f1DiEWqF3lxxjV55vnzE7Tg==",
+      "path": "mdxaml/1.27.0",
+      "hashPath": "mdxaml.1.27.0.nupkg.sha512"
+    },
+    "MdXaml.Plugins/1.27.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-We7LtBdoukRg9mqTfa1f5n8z/GQPMKBRj3URk9DiMuqzIHkW1lTgK5njVPSScxsRt4YzW22423tSnLWNm2MJKg==",
+      "path": "mdxaml.plugins/1.27.0",
+      "hashPath": "mdxaml.plugins.1.27.0.nupkg.sha512"
+    },
+    "WPFMediaKit/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uMbuDiJ8JaeorPsst7nC3KtDpE8ZU37WrMw4QEb8EAOa0eYtBn6KniTs9Gxp+WLXLoX7+J52NR+aCSE9Xhu7Cg==",
+      "path": "wpfmediakit/2.3.0",
+      "hashPath": "wpfmediakit.2.3.0.nupkg.sha512"
+    }
+  }
+}

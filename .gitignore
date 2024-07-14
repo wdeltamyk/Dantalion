@@ -1,0 +1,9 @@
+AI_Interface/bin/
+AI_Interface/obj/
+AI_Interface/Properties/
+AI_Interface/.vs/
+AI_Interface/.venv/
+C#_Modules/bin/
+C#_Modules/obj/
+Main/.vs/
+Main/__pycache__/
