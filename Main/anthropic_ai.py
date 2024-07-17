@@ -6,6 +6,7 @@ import sys
 import clr
 import logging
 import traceback
+import re
 
 from python_executors import execute_python_command
 from anthropic import AsyncAnthropic
@@ -20,13 +21,13 @@ def add_clr_reference(dll_name):
         print(f"Error adding CLR reference: {e}")
         sys.exit(1)
 
-add_clr_reference('LocalGPT.dll')
+add_clr_reference('LocalGPT_FileAccess.dll')
 
 try:
-    from LocalGPT import FileBrowser, ProgramLauncher
-    print("Successfully imported FileBrowser and ProgramLauncher from LocalGPT.dll")
+    from LocalGPT_FileAccess import FileBrowser, ProgramLauncher
+    print("Successfully imported FileBrowser and ProgramLauncher from LocalGPT_FileAccess.dll")
 except ImportError as e:
-    print(f"Error importing from LocalGPT.dll: {e}")
+    print(f"Error importing from LocalGPT_FileAccess.dll: {e}")
     sys.exit(1)
 
 file_browser = FileBrowser()
@@ -39,40 +40,98 @@ def load_capabilities():
     with open('capabilities.json', 'r') as f:
         return json.load(f)
 
+def load_purpose():
+    with open('purpose.json', 'r') as f:
+        return json.load(f)
+
 capabilities = load_capabilities()
+purpose = load_purpose()
 
 class ChatSession:
     def __init__(self):
-        self.system_prompt = json.dumps(capabilities, indent=2)
+        self.capabilities = capabilities
+        self.purpose = purpose
+        self.system_prompt = self.create_system_prompt()
         self.messages = []
 
+    def create_system_prompt(self):
+        return f"""
+        Capabilities:
+        {json.dumps(self.capabilities, indent=2)}
+
+        Purpose and Tone:
+        {json.dumps(self.purpose, indent=2)}
+
+        Please adhere to the above capabilities and purpose in all interactions.
+        
+        When suggesting actions that require system commands, you can naturally incorporate them into your responses. The following commands are available:
+        - launch_program [program_name] [optional_arguments]
+        - run_code_in_virtual_env [code]
+        - scrape_website [url] [optional_subdomain]
+
+        For example, you might say: "Certainly! I can open that file for you. Let me launch_program notepad example.txt"
+        """
+
+    def cleanup_messages(self):
+        if len(self.messages) > 20:  # Adjust this number as needed
+            self.messages = self.messages[-10:]  # Keep only the last 10 messages
+
     async def process_message(self, user_message):
+        self.cleanup_messages()
+        
         self.messages.append({"role": "user", "content": user_message})
         
-        if user_message.startswith("launch_program"):
-            return await self.handle_program_launch(user_message)
-        elif user_message in ["file modified.", "program terminated."]:
-            return await self.handle_program_update()
-        elif user_message.startswith(("run_code_in_virtual_env", "scrape_website")):
-            return await self.handle_python_command(user_message)
-        else:
-            response = await client.messages.create(
-                model="claude-3-5-sonnet-20240620",
-                max_tokens=1024,
-                system=self.system_prompt,
-                messages=self.messages
-            )
-            assistant_message = response.content[0].text
-            self.messages.append({"role": "assistant", "content": assistant_message})
-            return assistant_message
+        logging.debug(f"Messages before processing: {json.dumps(self.messages, indent=2)}")
+        
+        response = await client.messages.create(
+            model="claude-3-5-sonnet-20240620",
+            max_tokens=1024,
+            system=self.system_prompt,
+            messages=self.messages
+        )
+        assistant_message = response.content[0].text
+        self.messages.append({"role": "assistant", "content": assistant_message})
+        
+        # Check for commands in the assistant's response
+        command_result = await self.check_for_commands(assistant_message)
+        if command_result:
+            return command_result
+        
+        return assistant_message
+
+    async def check_for_commands(self, message):
+        # Check for launch_program command
+        launch_match = re.search(r'launch_program\s+(\S+)(?:\s+(.+))?', message)
+        if launch_match:
+            program = launch_match.group(1)
+            arguments = launch_match.group(2) or ""
+            return await self.handle_program_launch(f"launch_program {program} {arguments}")
+        
+        # Check for run_code_in_virtual_env command
+        if "run_code_in_virtual_env" in message:
+            return await self.handle_python_command(message)
+        
+        # Check for scrape_website command
+        if "scrape_website" in message:
+            return await self.handle_python_command(message)
+        
+        # Add more command checks here as needed
+        
+        return None
 
     async def handle_program_launch(self, user_message):
         parts = user_message.split(maxsplit=2)
         program = parts[1]
         arguments = parts[2] if len(parts) > 2 else ""
         
-        program_launcher.LaunchProgram(program, arguments)
-        launch_response = f"Launched program: {program}" + (f" with arguments: {arguments}" if arguments else "")
+        try:
+            # Run LaunchProgram in a separate thread
+            await asyncio.to_thread(program_launcher.LaunchProgram, program, arguments)
+            launch_response = f"Launched program: {program}" + (f" with arguments: {arguments}" if arguments else "")
+            logging.info(f"Program launch successful: {launch_response}")
+        except Exception as e:
+            launch_response = f"Failed to launch program: {program}. Error: {str(e)}"
+            logging.error(f"Program launch failed: {launch_response}")
         
         response = await client.messages.create(
             model="claude-3-5-sonnet-20240620",
@@ -81,11 +140,12 @@ class ChatSession:
             messages=self.messages + [{"role": "user", "content": launch_response}]
         )
         assistant_message = response.content[0].text
+        self.messages.append({"role": "user", "content": launch_response})
         self.messages.append({"role": "assistant", "content": assistant_message})
         return launch_response + "\n" + assistant_message
 
-    async def handle_program_update(self):
-        update_message = "Program update received."
+    async def handle_program_update(self, update_type):
+        update_message = f"Program update received: {update_type}"
         response = await client.messages.create(
             model="claude-3-5-sonnet-20240620",
             max_tokens=1024,
@@ -93,6 +153,7 @@ class ChatSession:
             messages=self.messages + [{"role": "user", "content": update_message}]
         )
         assistant_message = response.content[0].text
+        self.messages.append({"role": "user", "content": update_message})
         self.messages.append({"role": "assistant", "content": assistant_message})
         return assistant_message
 
@@ -106,6 +167,7 @@ class ChatSession:
             messages=self.messages + [{"role": "user", "content": result_message}]
         )
         assistant_message = response.content[0].text
+        self.messages.append({"role": "user", "content": result_message})
         self.messages.append({"role": "assistant", "content": assistant_message})
         return f"Command executed. Result:\n{result}\n\nAssistant response:\n{assistant_message}"
 
@@ -143,6 +205,7 @@ async def start_server():
             logging.debug(traceback.format_exc())
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     try:
         asyncio.run(start_server())
     except Exception as e:

@@ -1,0 +1,7 @@
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\bin\Debug\LocalGPT_FileAccess.dll.config
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\bin\Debug\LocalGPT_FileAccess.dll
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\bin\Debug\LocalGPT_FileAccess.pdb
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\obj\Debug\LocalGPT_FileAccess.csproj.AssemblyReference.cache
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\obj\Debug\LocalGPT_FileAccess.csproj.CoreCompileInputs.cache
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\obj\Debug\LocalGPT_FileAccess.dll
+C:\Users\DanielL\Documents\Dantalion_Testing\LocalGPT_FileAccess\obj\Debug\LocalGPT_FileAccess.pdb

@@ -1,0 +1,1 @@
+This folder is just the combined aspects of the other folders, it's messy and needs work but for now think of it as the final output/bin folder for a compiled program.

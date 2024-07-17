@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalGPTGui", "LocalGPTGui.csproj", "{F87B6DC9-AFE5-4618-85CF-6400ED90BF1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalGPT", "..\C#_Modules\LocalGPT.csproj", "{57B829EC-FB7E-4C99-A876-22AB18678C5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalGPT_FileAccess", "..\LocalGPT_FileAccess\LocalGPT_FileAccess.csproj", "{7888E337-E0EB-4C0E-9384-EF39A8F8171C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F87B6DC9-AFE5-4618-85CF-6400ED90BF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F87B6DC9-AFE5-4618-85CF-6400ED90BF1C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{F87B6DC9-AFE5-4618-85CF-6400ED90BF1C}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{57B829EC-FB7E-4C99-A876-22AB18678C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57B829EC-FB7E-4C99-A876-22AB18678C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57B829EC-FB7E-4C99-A876-22AB18678C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57B829EC-FB7E-4C99-A876-22AB18678C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7888E337-E0EB-4C0E-9384-EF39A8F8171C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7888E337-E0EB-4C0E-9384-EF39A8F8171C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7888E337-E0EB-4C0E-9384-EF39A8F8171C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7888E337-E0EB-4C0E-9384-EF39A8F8171C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -76,7 +76,7 @@
             </TextBox>
             <Button Name="Send" Margin="430,10,20,10" Grid.Column="2" Grid.Row="1" BorderBrush="FloralWhite" Background="SlateGray" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center" ClipToBounds="True" IsDefault="True" HorizontalAlignment="Right" Click="OnSendButtonClick">
                 <StackPanel>
-                    <Image Source="send_circle_icon_136236.ico" Width="40" Height="40" ClipToBounds="True" Grid.IsSharedSizeScope="True"/>
+                    <Image Source="sendsymbol.ico" Width="40" Height="40" ClipToBounds="True" Grid.IsSharedSizeScope="True"/>
                 </StackPanel>
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -86,7 +86,7 @@
             </Button>
             <Button Name="Upload" Margin="20,0,0,0" Grid.Row="1" BorderBrush="FloralWhite" Background="SlateGray" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" ClipToBounds="True" IsDefault="True" HorizontalAlignment="Left" Click="OnUploadButtonClick">
                 <StackPanel>
-                    <Image Source="attachmentpaperclipsymbolinblackcircularbutton_104786.ico" Width="40" Height="40" ClipToBounds="True" Grid.IsSharedSizeScope="True"/>
+                    <Image Source="uploadsymbol.ico" Width="40" Height="40" ClipToBounds="True" Grid.IsSharedSizeScope="True"/>
                 </StackPanel>
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
