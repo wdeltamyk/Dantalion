@@ -13,9 +13,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="main.ico" />
-    <Content Include="sendsymbol.ico" />
-    <Content Include="uploadsymbol.ico" />
+    <None Remove="Dantalion.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Dantalion.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="main.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="sendsymbol.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="uploadsymbol.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
