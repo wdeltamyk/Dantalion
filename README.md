@@ -15,7 +15,10 @@ I will eventually be including compatability with Gemini and ChatGPT.
 The chat model works, it can send chat's to and from the GUI with no issue, but requires more testing, especially with the C# file handling.
 Memory management is being worked on, references to it still exist in LGPT_FileAccess.cs but these were giving compatability errors, I'll be moving what I can to the main Python module in response to this.
 
-I'm working on a speech module, if I can get this functional I will swap out the vaguely threatening orb in the GUI with a realtime waveform.
+I'm working on a speech module, if I can get this functional I will swap out the vaguely threatening orb in the GUI with a realtime waveform. The voice will be overtly threatening.
+I'm making an effort for this to not feel human or to treat the user as a friend.
+
+I also broke the buttons in the GUI showing up, WIP.
 
 No plans to make this Linux or OSX compatible as yet.
 
