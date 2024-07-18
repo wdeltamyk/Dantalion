@@ -192,19 +192,25 @@ namespace LocalGPT_FileAccess
 
         public void UpdateChatMemory(string fileName, string content)
         {
+            EnsureMemoryDirectoryExists();
             string filePath = Path.Combine(MEMORY_DIR, fileName);
-            using (var mmf = MemoryMappedFile.OpenExisting(filePath))
+            using (var mmf = MemoryMappedFile.CreateOrOpen(filePath, MAX_MEMORY_FILE_SIZE))
             using (var accessor = mmf.CreateViewAccessor())
             {
                 byte[] contentBytes = Encoding.UTF8.GetBytes(content);
-                accessor.WriteArray(0, contentBytes, 0, contentBytes.Length);
+                accessor.WriteArray(0, contentBytes, 0, Math.Min(contentBytes.Length, MAX_MEMORY_FILE_SIZE));
             }
         }
 
         public string LoadChatMemory(string fileName)
         {
+            EnsureMemoryDirectoryExists();
             string filePath = Path.Combine(MEMORY_DIR, fileName);
-            using (var mmf = MemoryMappedFile.OpenExisting(filePath))
+            if (!File.Exists(filePath))
+            {
+                return string.Empty;
+            }
+            using (var mmf = MemoryMappedFile.CreateOrOpen(filePath, MAX_MEMORY_FILE_SIZE))
             using (var accessor = mmf.CreateViewAccessor())
             {
                 byte[] buffer = new byte[MAX_MEMORY_FILE_SIZE];
@@ -215,6 +221,7 @@ namespace LocalGPT_FileAccess
 
         public void UpdateOverallMemory(string summary)
         {
+            EnsureMemoryDirectoryExists();
             string[] existingFiles = Directory.GetFiles(MEMORY_DIR, $"{OVERALL_MEMORY_PREFIX}*.mmap");
             string lastFile = existingFiles.OrderByDescending(f => f).FirstOrDefault();
 
@@ -233,7 +240,7 @@ namespace LocalGPT_FileAccess
             else
             {
                 // Append to the existing file
-                using (var mmf = MemoryMappedFile.OpenExisting(lastFile))
+                using (var mmf = MemoryMappedFile.CreateOrOpen(lastFile, MAX_MEMORY_FILE_SIZE))
                 using (var accessor = mmf.CreateViewAccessor())
                 {
                     long currentLength = accessor.ReadInt64(0);
@@ -246,12 +253,13 @@ namespace LocalGPT_FileAccess
 
         public List<string> LoadOverallMemory()
         {
+            EnsureMemoryDirectoryExists();
             List<string> memories = new List<string>();
             string[] memoryFiles = Directory.GetFiles(MEMORY_DIR, $"{OVERALL_MEMORY_PREFIX}*.mmap");
 
             foreach (string file in memoryFiles.OrderBy(f => f))
             {
-                using (var mmf = MemoryMappedFile.OpenExisting(file))
+                using (var mmf = MemoryMappedFile.CreateOrOpen(file, MAX_MEMORY_FILE_SIZE))
                 using (var accessor = mmf.CreateViewAccessor())
                 {
                     long length = accessor.ReadInt64(0);

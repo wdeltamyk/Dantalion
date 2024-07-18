@@ -24,14 +24,15 @@ def add_clr_reference(dll_name):
 add_clr_reference('LocalGPT_FileAccess.dll')
 
 try:
-    from LocalGPT_FileAccess import FileBrowser, ProgramLauncher
-    print("Successfully imported FileBrowser and ProgramLauncher from LocalGPT_FileAccess.dll")
+    from LocalGPT_FileAccess import FileBrowser, ProgramLauncher, MemoryManager
+    print("Successfully imported FileBrowser, ProgramLauncher, and MemoryManager from LocalGPT_FileAccess.dll")
 except ImportError as e:
     print(f"Error importing from LocalGPT_FileAccess.dll: {e}")
     sys.exit(1)
 
 file_browser = FileBrowser()
 program_launcher = ProgramLauncher()
+memory_manager = MemoryManager()
 
 anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
 client = AsyncAnthropic(api_key=anthropic_api_key)
@@ -53,6 +54,11 @@ class ChatSession:
         self.purpose = purpose
         self.system_prompt = self.create_system_prompt()
         self.messages = []
+        try:
+            self.chat_memory_file = memory_manager.CreateChatMemory()
+        except Exception as e:
+            logging.error(f"Failed to create chat memory: {e}")
+            self.chat_memory_file = None
 
     def create_system_prompt(self):
         return f"""
@@ -75,6 +81,24 @@ class ChatSession:
     def cleanup_messages(self):
         if len(self.messages) > 20:  # Adjust this number as needed
             self.messages = self.messages[-10:]  # Keep only the last 10 messages
+        self.update_chat_memory()
+
+    def update_chat_memory(self):
+        if self.chat_memory_file:
+            try:
+                memory_content = json.dumps(self.messages)
+                memory_manager.UpdateChatMemory(self.chat_memory_file, memory_content)
+            except Exception as e:
+                logging.error(f"Failed to update chat memory: {e}")
+
+    def load_chat_memory(self):
+        if self.chat_memory_file:
+            try:
+                memory_content = memory_manager.LoadChatMemory(self.chat_memory_file)
+                if memory_content:
+                    self.messages = json.loads(memory_content)
+            except Exception as e:
+                logging.error(f"Failed to load chat memory: {e}")
 
     async def process_message(self, user_message):
         self.cleanup_messages()
@@ -91,6 +115,12 @@ class ChatSession:
         )
         assistant_message = response.content[0].text
         self.messages.append({"role": "assistant", "content": assistant_message})
+        
+        # Update overall memory
+        try:
+            memory_manager.UpdateOverallMemory(f"User: {user_message}\nAssistant: {assistant_message}")
+        except Exception as e:
+            logging.error(f"Failed to update overall memory: {e}")
         
         # Check for commands in the assistant's response
         command_result = await self.check_for_commands(assistant_message)
@@ -173,6 +203,7 @@ class ChatSession:
 
 async def handle_client_connection(client_socket):
     chat_session = ChatSession()
+    chat_session.load_chat_memory()  # Load previous chat memory if it exists
     while True:
         try:
             request = await asyncio.get_event_loop().sock_recv(client_socket, 4096)
