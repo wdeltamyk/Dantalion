@@ -56,9 +56,6 @@ namespace LocalGPTGui
                 _pythonProcess.Start();
                 _pythonProcess.BeginOutputReadLine();
                 _pythonProcess.BeginErrorReadLine();
-
-                // Don't wait for exit, let it run
-                MessageBox.Show("Python script started successfully.");
             }
             catch (Exception ex)
             {
@@ -70,7 +67,7 @@ namespace LocalGPTGui
         {
             try
             {
-                ResponseTextBox.Markdown = "p=.";
+                ResponseTextBox.Markdown = "";
             }
             catch (Exception ex)
             {
@@ -113,7 +110,7 @@ namespace LocalGPTGui
                     string fileContent = File.ReadAllText(openFileDialog.FileName);
                     AppendToResponseTextBox($"You: (Uploaded file: {Path.GetFileName(openFileDialog.FileName)})\n\n");
                     string response = await SendMessageToServer(fileContent);
-                    AppendToResponseTextBox($"AI: {response}\n\n");
+                    AppendToResponseTextBox($"Dantalion: {response}\n\n");
                 }
                 catch (Exception ex)
                 {
@@ -206,6 +203,11 @@ namespace LocalGPTGui
             {
                 _pythonProcess.Kill();
             }
+        }
+
+        private void UserInputTextBox_KeyDown_1(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }

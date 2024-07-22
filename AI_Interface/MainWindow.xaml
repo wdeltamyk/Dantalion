@@ -15,6 +15,16 @@
         <Style TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="0"/>
         </Style>
+        <Storyboard x:Key="TerminalGlowAnimation">
+            <DoubleAnimation 
+                Storyboard.TargetProperty="(Effect).BlurRadius"
+                From="7.5" To="10" Duration="0:0:0.5" 
+                AutoReverse="True" RepeatBehavior="Forever"/>
+            <ColorAnimation 
+                Storyboard.TargetProperty="(Effect).(DropShadowEffect.Color)"
+                From="#FF00FF00" To="#5000FF00" Duration="0:0:0.5" 
+                AutoReverse="True" RepeatBehavior="Forever"/>
+        </Storyboard>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,7 +38,7 @@
                 <VisualBrush TileMode="Tile" Viewport="0,0,1,4" ViewportUnits="Absolute">
                     <VisualBrush.Visual>
                         <Grid>
-                            <Rectangle Fill="Black" Height="3"/>
+                            <Rectangle Fill="White" Height="3"/>
                             <Rectangle Fill="#40FFFFFF" Height="1" VerticalAlignment="Bottom"/>
                         </Grid>
                     </VisualBrush.Visual>
@@ -36,30 +46,10 @@
             </Rectangle.OpacityMask>
         </Rectangle>
 
-        <!--local:WireframeSphereControl Grid.Row="0" Grid.Column="0" Opacity="1" IsHitTestVisible="False"/-->
-
         <Grid Grid.Row="0">
-            <md:MarkdownScrollViewer Name="ResponseTextBox"
-                                     VerticalScrollBarVisibility="Auto"
-                                     Margin="10" Padding="10" 
-                                     Foreground="#FF00FF00" BorderBrush="#FF008000" BorderThickness="1" 
-                                     Background="Transparent" FontFamily="Consolas" Cursor="Cross">
-                <md:MarkdownScrollViewer.Effect>
-                    <DropShadowEffect Color="#FF00FF00" BlurRadius="10" ShadowDepth="0"/>
-                </md:MarkdownScrollViewer.Effect>
-            </md:MarkdownScrollViewer>
-
             <!-- Centered Image with Flickering Glow -->
-            <Image x:Name="CenteredImage" Source="dantalion.png" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="325" RenderTransformOrigin="0.5,0.5" MinWidth="325" MinHeight="300">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-0.048"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Image.RenderTransform>
+            <Image x:Name="CenteredImage" Source="dantalion.png"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Image.Effect>
                     <DropShadowEffect x:Name="ImageGlow" Color="#FFFF00FF" BlurRadius="20" ShadowDepth="0"/>
                 </Image.Effect>
@@ -70,18 +60,77 @@
                                 <DoubleAnimation 
                                     Storyboard.TargetName="ImageGlow" 
                                     Storyboard.TargetProperty="BlurRadius"
-                                    From="20" To="75" Duration="0:0:5.0" 
+                                    From="35" To="75" Duration="0:0:2.5" 
                                     AutoReverse="True" RepeatBehavior="Forever"/>
                                 <ColorAnimation 
                                     Storyboard.TargetName="ImageGlow" 
                                     Storyboard.TargetProperty="Color"
-                                    From="#FFFF00FF" To="#50FF00FF" Duration="0:0:5.0" 
+                                    From="#FFFF00FF" To="#70FF00FF" Duration="0:0:5.0" 
                                     AutoReverse="True" RepeatBehavior="Forever"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
                 </Image.Triggers>
             </Image>
+
+            <Grid>
+                <md:MarkdownScrollViewer Name="ResponseTextBox"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Margin="10" Padding="10" 
+                                         Foreground="#FF00FF00" BorderBrush="#00008000" BorderThickness="1" 
+                                         Background="#80000000" FontFamily="Consolas">
+                    <md:MarkdownScrollViewer.Effect>
+                        <DropShadowEffect Color="#FF00FF00" BlurRadius="10" ShadowDepth="0"/>
+                    </md:MarkdownScrollViewer.Effect>
+                </md:MarkdownScrollViewer>
+
+                <!-- Multiple Scanlines Effect -->
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <Rectangle Fill="#20FFFFFF" Height="2" Width="{Binding ActualWidth, ElementName=ResponseTextBox}">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform x:Name="ScanlineTransform1"/>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation 
+                                                Storyboard.TargetName="ScanlineTransform1" 
+                                                Storyboard.TargetProperty="Y"
+                                                From="0" To="{Binding ActualHeight, ElementName=ResponseTextBox}" 
+                                                Duration="0:0:2" RepeatBehavior="Forever" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+                        <Rectangle Fill="#20FFFFFF" Height="2" Width="{Binding ActualWidth, ElementName=ResponseTextBox}">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform x:Name="ScanlineTransform2"/>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation 
+                                                Storyboard.TargetName="ScanlineTransform2" 
+                                                Storyboard.TargetProperty="Y"
+                                                From="-100" To="{Binding ActualHeight, ElementName=ResponseTextBox}" 
+                                                Duration="0:0:2" RepeatBehavior="Forever" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+                    </ItemsControl.Items>
+                </ItemsControl>
+            </Grid>
         </Grid>
 
         <!-- Text Box for User Input -->
@@ -89,11 +138,16 @@
                  Margin="65,10,65,10" Padding="5" VerticalContentAlignment="Center" 
                  Foreground="#FF00FF00" Background="#1A000000" 
                  BorderBrush="#FF008000" BorderThickness="1"
-                 FontFamily="Consolas" FontSize="14"
-                 AcceptsReturn="True" AcceptsTab="True" Cursor="Pen">
+                 FontFamily="Consolas" FontSize="14" AcceptsTab="True" Cursor="Pen"
+                 KeyDown="UserInputTextBox_KeyDown">
             <TextBox.Effect>
-                <DropShadowEffect Color="#FF00FF00" BlurRadius="10" ShadowDepth="0"/>
+                <DropShadowEffect Color="#FF00FF00" BlurRadius="5" ShadowDepth="0"/>
             </TextBox.Effect>
+            <TextBox.Triggers>
+                <EventTrigger RoutedEvent="TextBox.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource TerminalGlowAnimation}"/>
+                </EventTrigger>
+            </TextBox.Triggers>
         </TextBox>
 
         <!-- Send Button -->
@@ -103,8 +157,13 @@
                 Click="OnSendButtonClick">
             <Image x:Name="sendbutton" Source="sendsymbol.ico" Width="40" Height="40" Cursor="Hand"/>
             <Button.Effect>
-                <DropShadowEffect Color="#FF00FF00" BlurRadius="10" ShadowDepth="0"/>
+                <DropShadowEffect Color="#FF00FF00" BlurRadius="5" ShadowDepth="0"/>
             </Button.Effect>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource TerminalGlowAnimation}"/>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
 
         <!-- Upload Button -->
@@ -114,8 +173,13 @@
                 Click="OnUploadButtonClick">
             <Image x:Name="uploadbutton" Source="uploadsymbol.ico" Width="40" Height="40" Cursor="Hand"/>
             <Button.Effect>
-                <DropShadowEffect Color="#FF00FF00" BlurRadius="10" ShadowDepth="0"/>
+                <DropShadowEffect Color="#FF00FF00" BlurRadius="5" ShadowDepth="0"/>
             </Button.Effect>
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Loaded">
+                    <BeginStoryboard Storyboard="{StaticResource TerminalGlowAnimation}"/>
+                </EventTrigger>
+            </Button.Triggers>
         </Button>
     </Grid>
 </Window>
