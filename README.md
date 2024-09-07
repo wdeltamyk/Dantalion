@@ -1,3 +1,13 @@
+# Archived
+
+This project has been archived, full modification is allowed with the only requirement being attribution.
+I've chosen to retire the project due to realising the limitations of using a closed source model as the basis of the program.
+I will continue working on a similar project built with open source models, to allow for additional abilities and modules. I'm going to create a new repo for this project though for a few reasons.
+The main reason being readability and tracking, it's a lot easier to work on a project that was built with one purpose and uses specific models than it is to rebuild this repo with so many changes.
+
+The new project will use the same name for the project "Dantalion" and will have many of the features, however improved.
+The source code will be BYO AI to allow for any open source model, censored or not. The main releases will only feature censored models though, to legally cover myself as well as avoid ethical dillemas I am not equipped to answer.
+
 
 # Dantalion
 
