@@ -1,75 +1,80 @@
-# Archived
+# Dantalion (Archived)
 
-This project has been archived, full modification is allowed with the only requirement being attribution.
-I've chosen to retire the project due to realising the limitations of using a closed source model as the basis of the program.
-I will continue working on a similar project built with open source models, to allow for additional abilities and modules. I'm going to create a new repo for this project though for a few reasons.
-The main reason being readability and tracking, it's a lot easier to work on a project that was built with one purpose and uses specific models than it is to rebuild this repo with so many changes.
+![Dantalion Main Image](Dantalion.png)
 
-The new project will use the same name for the project "Dantalion" and will have many of the features, however improved.
-The source code will be BYO AI to allow for any open source model, censored or not. The main releases will only feature censored models though, to legally cover myself as well as avoid ethical dillemas I am not equipped to answer.
+## Project Status: Archived
 
+This project has been archived and is no longer actively maintained. It is provided on an as-is basis under the MIT license, allowing for full modification with attribution to the original project/author required.
 
-# Dantalion
+## Overview
 
-![alt mainimage](Dantalion.png)
+Dantalion was an experimental local AI project that utilized the Anthropic API (Claude 3.5) for natural language processing. The project aimed to create a local interface for AI interactions, with plans for integration of multiple AI models.
 
-## GUI Use
-I've not packed it as a release as I want to reduce the amount of files required, for now just clone and run LocalGPTGUI.exe from the "Main" folder
+## Key Features
 
-## Current state
+- GUI interface for AI interactions
+- Integration with Anthropic API (Claude 3.5)
+- File handling capabilities
+- Console connection for debugging purposes
 
-As of right now the only included AI is the Anthropic api, using Claude 3.5.
-The next planned AI I will be integrating is DeepSeek Coder V2.
-I will eventually be including compatability with Gemini and ChatGPT.
+## Technical Requirements
 
-The chat model works, it can send chat's to and from the GUI with no issue, but requires more testing, especially with the C# file handling.
-Memory management is being worked on, references to it still exist in LGPT_FileAccess.cs but these were giving compatability errors, I'll be moving what I can to the main Python module in response to this.
+- .NET 6.0 and 8.0 runtimes
+- Python 3.x
+- Visual Studio 2022 (for C# component modifications)
 
-I'm working on a speech module, if I can get this functional I will swap out the vaguely threatening orb in the GUI with a realtime waveform. The voice will be overtly threatening.
-I'm making an effort for this to not feel human or to treat the user as a friend.
+### NuGet Packages
+- MdXaml (version 1.27.0)
+- WPFMediaKit (version 2.2.1)
 
-I also broke the buttons in the GUI showing up, WIP.
+## Setup and Configuration
 
-No plans to make this Linux or OSX compatible as yet.
+### API Key Configuration
 
-## Your API keys need to be set to environment variables
+To use the Anthropic API, set up an environment variable:
 
-anthropic_ai.py is set as "ANTHROPIC_API_KEY"
+1. Open the Start menu and search for "environment"
+2. Select "Edit the system environment variables"
+3. In the new window, click "Environment Variables..."
+4. Under "User variables", click "New..."
+5. Set the variable name as `ANTHROPIC_API_KEY` and the value as your API key
 
-You could modify this to use a .env file or load the key directly but I'd not recommend that.
+![Environment Variable Setup](image-1.png)
+![Environment Variable Setup](image-2.png)
+![Environment Variable Setup](image-3.png)
+![Environment Variable Setup](image-4.png)
 
-to set your environment variable hit the start menu > type in "environment" > select "edit the system environment variables" > new window > "Environment Variables..." > New Window > hit new... under user variables, name it to correspond to the program and then set the value as your api key.
+## Usage
 
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
+### GUI
+Run `LocalGPTGUI.exe` from the "Main" folder.
 
-## Console connection added
+### Console
+For console operation or debugging:
 
-The file `console_connect.py` will allow you to run this in a Powershell or CMD console, good for debugging.
+1. Navigate to the Python files directory:
+   ```
+   cd "Path\to\your\python\files"
+   ```
+2. Run the main script:
+   ```
+   python anthropic_ai.py
+   ```
+3. In a second console, run:
+   ```
+   python console_connect.py
+   ```
 
-To run via console:
-`$: cd "Path\to\your\python\files"`
-`$: Python .\anthropic.py`
-Launch a second console
-`$: cd "Path\to\your\python\files"`
-`$: Python .\console_connect.py`
+## Development Notes
 
-## Errors in main modules
+- `LocalGPT.dll/exe` must target .NET 6.0 framework for proper Python integration
+- `LocalGPTGui.exe` is built with .NET 8.0 framework
+- The project consists of a WPF GUI (`LocalGPTGUI`) and a console application (`LocalGPT`)
 
-anthropic_ai.py may display that importing the LocalGPT.dll failed, this is just a limitation of Visual Studio Code and they will both be able to import the dll without issue.
+## Future Development
 
-## Building the CS
+While this project is archived, a spiritual successor is in development. The new project aims to use local, open-source models to enable offline operation and address data privacy concerns.
 
-**Requires** .net 6.0 and 8.0. These aren't negotiable, both are absolutely required.
+## License
 
-I built these with the latest VS, Visual Studio 2022 with a lot of additional functions enabled but for now 6.0 and 8.0 runtime will allow you to modify the C# components.
-
-The GUI is a WPF, LocalGPT is a console app.
-
-LocalGPT.dll/exe needs to stay targeted toward the .net 6.0 framework, it will build if you run as 8.0 but will not import correctly into the Python script.
-
-LocalGPTGui.exe is built with the .net 8.0 framework, it might function on .net 6.0 but just leave it at 8.0 for the sake of compatibility.
-
-**NuGet packages used** MdXaml==1.27.0 and WPFMediaKit==2.2.1
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
